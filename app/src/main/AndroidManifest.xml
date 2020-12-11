@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Practica5">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.EdicionDiaActivity"></activity>
+        <activity
+            android:name=".ui.MainActivity"
+            android:theme="@style/Theme.Practica5.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

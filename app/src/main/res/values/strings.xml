@@ -1,3 +1,34 @@
 <resources>
     <string name="app_name">Practica5</string>
+    <string name="rbAsc">Asc</string>
+    <string name="rbDesc">Desc</string>
+    <string name="order"><![CDATA[a>z]]></string>
+    <string name="valoravida">Valora Vida</string>
+    <string name="fechas">Fechas</string>
+    <string name="setting">Ajustes</string>
+    <string name="about">Acerca De</string>
+    <string name="fechaPorDefecto">--/--/----</string>
+    <string name="breveResumen">Breve resumen del dia</string>
+    <string name="valoradia">Valorar Dia</string>
+    <string name="descripcion">Cuenta a tu diario tu dia...</string>
+    <string name="diarioDatabase">diario_database</string>
+    <string name="imgNuevo">Imagen botón añadir</string>
+    <string name="EditTitulo" type="id">Editando Dia</string>
+    <string name="NuevoTitulo" type="id">Nuevo Dia</string>
+    <string name="MensajeErrorDia" type="id">Debes de introducir todos los campos antes de guardar el
+        proyecto.
+    </string>
+    <string name="ErrorActivityResult" type="id">No se ha realizado ninguna acción</string>
+    <string-array name="valoracionDia">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
 </resources>

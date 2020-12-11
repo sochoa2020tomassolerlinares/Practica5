@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_ordenar"
+        android:icon="@android:drawable/ic_menu_sort_alphabetically"
+        android:orderInCategory="100"
+        android:title="@string/order"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_valoravida"
+        android:title="@string/valoravida"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        />
+
+    <item android:id="@+id/action_fechas"
+        android:title="@string/fechas"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        />
+
+    <item android:id="@+id/action_setting"
+        android:title="@string/setting"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        />
+
+    <item android:id="@+id/action_about"
+        android:title="@string/about"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        />
+</menu>
