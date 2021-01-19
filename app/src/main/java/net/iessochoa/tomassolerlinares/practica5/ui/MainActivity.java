@@ -1,15 +1,16 @@
 package net.iessochoa.tomassolerlinares.practica5.ui;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import net.iessochoa.tomassolerlinares.practica5.R;
+import net.iessochoa.tomassolerlinares.practica5.adapters.DiarioAdapter;
 import net.iessochoa.tomassolerlinares.practica5.model.DiaDiario;
 import net.iessochoa.tomassolerlinares.practica5.viewmodels.DiarioViewModel;
 
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int OPTION_REQUEST_NUEVO = 1, OPTION_REQUEST_EDIT = 2;
     private DiarioViewModel diarioViewModel;
     private RecyclerView rvDiario;
+    private DiarioAdapter diarioAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +43,18 @@ public class MainActivity extends AppCompatActivity {
 
         FloatingActionButton fabNuevo = findViewById(R.id.fabNuevo);
 
+        diarioAdapter = new DiarioAdapter();
+        rvDiario = findViewById(R.id.rvDiario);
+        rvDiario.setHasFixedSize(true);
+        rvDiario.setLayoutManager(new LinearLayoutManager(this));
+        rvDiario.setAdapter(diarioAdapter);
+
         diarioViewModel = new ViewModelProvider(this).get(DiarioViewModel.class);
-        diarioViewModel.getDiarioLiveData().observe(this, new
+        diarioViewModel.getAllDiarios().observe(this, new
                 Observer<List<DiaDiario>>() {
                     @Override
                     public void onChanged(List<DiaDiario> diario) {
-                        //adapter.setDiario(diario);
+                        diarioAdapter.setDiario(diario);
                         Log.d("P5", "tamaño: " + diario.size());
                     }
                 });
@@ -54,6 +63,30 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, EdicionDiaActivity.class);
             startActivityForResult(intent, OPTION_REQUEST_NUEVO);
         });
+
+        diarioAdapter.setOnClickBorrarListener(this::borrarDia);
+        diarioAdapter.setOnClickEditarListener(this::editarDia);
+    }
+
+    private void borrarDia(final DiaDiario dia) {
+        AlertDialog.Builder dialogo = new AlertDialog.Builder(MainActivity.this);
+        dialogo.setTitle(getString(R.string.Aviso));
+
+        dialogo.setMessage(getString(R.string.AvisoMsn));
+
+        dialogo.setPositiveButton(android.R.string.yes, (dialogInterface, i) -> diarioViewModel.delete(dia));
+        dialogo.setNegativeButton(android.R.string.no, (dialogInterface, i) -> Toast.makeText(this, R.string.CancelBorrar, Toast.LENGTH_SHORT).show());
+        dialogo.show();
+    }
+
+    /**
+     * Método encargado de editar una tarea.
+     * @param dia
+     */
+    private void editarDia(final DiaDiario dia) {
+        Intent intent = new Intent(this, EdicionDiaActivity.class);
+        intent.putExtra(EXTRA_DIA, dia);
+        startActivityForResult(intent, OPTION_REQUEST_EDIT);
     }
 
     @Override
@@ -69,16 +102,17 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == RESULT_CANCELED) {
             Toast.makeText(this, getString(R.string.ErrorActivityResult), Toast.LENGTH_SHORT);
         } else {
-            switch (requestCode) {
+            Bundle bundle = data.getExtras();
+            DiaDiario dia = bundle.getParcelable(EXTRA_DIA);
+            diarioViewModel.insert(dia);
+            /*switch (requestCode) {
                 case OPTION_REQUEST_NUEVO:
-                    Bundle bundle = data.getExtras();
-                    DiaDiario dia = bundle.getParcelable(EXTRA_DIA);
-                    diarioViewModel.insert(dia);
+
                     break;
                 case OPTION_REQUEST_EDIT:
 
                     break;
-            }
+            }*/
         }
     }
 }

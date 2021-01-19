@@ -19,6 +19,10 @@
         proyecto.
     </string>
     <string name="ErrorActivityResult" type="id">No se ha realizado ninguna acción</string>
+    <string name="Resumen">Resumen del dia</string>
+    <string name="Aviso">Aviso</string>
+    <string name="AvisoMsn">¿Está seguro de eliminar esta página del diario?</string>
+    <string name="CancelBorrar">No se ha eliminado el dia del diario.</string>
     <string-array name="valoracionDia">
         <item>1</item>
         <item>2</item>

@@ -50,40 +50,18 @@ public class DiarioRepository {
     }
 
 
-    /*public LiveData<List<Contacto>> getByNombreFecha(String nombre, Date menorQue){
-        mAllDiarios= mdiarioDao.findByNombreFecha(nombre,menorQue);
-        return mAllDiarios;
-    }
-    //lista ordenado por columnas diferentes
-    public LiveData<List<Contacto>> getContactosOrderByNombre(){
-        mAllDiarios= mdiarioDao.getContactosOrderByNombre();
-        return mAllDiarios;
-    }
-    public LiveData<List<Contacto>> getContactosOrderByFecha(){
-        mAllDiarios= mdiarioDao.getContactosOrderByFecha();
-        return mAllDiarios;
-    }
-    public LiveData<List<Contacto>> getContactosOrderBy(String order_by, String order){
-        mAllDiarios= mdiarioDao.getContactosOrderBy(order_by, order);
-        return mAllDiarios;
-    }*/
     public Single<Float> getValoracionTotal() {
         return mdiarioDao.getValoracionTotal();
     }
 
-    /*
-    Insertar: nos obliga a crear tarea en segundo plano
-     */
+    //Insertar: nos obliga a crear tarea en segundo plano
     public void insert(DiaDiario dia) {
         //administramos el hilo con el Executor
         DiarioDatabase.databaseWriteExecutor.execute(() -> {
             mdiarioDao.insert(dia);
         });
     }
-
-    /*
-    Borrar: nos obliga a crear tarea en segundo plano
-     */
+    //Borrar: nos obliga a crear tarea en segundo plano
     public void delete(DiaDiario dia) {
         //administramos el hilo con el Executor
         DiarioDatabase.databaseWriteExecutor.execute(() -> {

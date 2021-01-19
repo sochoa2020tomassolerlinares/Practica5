@@ -32,6 +32,7 @@ public class EdicionDiaActivity extends AppCompatActivity {
     private TextView tvFecha;
     private FloatingActionButton fabGuardar;
     private Calendar calendar = Calendar.getInstance();
+    DiaDiario dia;
 
     @SuppressLint("ResourceType")
     @Override
@@ -53,13 +54,17 @@ public class EdicionDiaActivity extends AppCompatActivity {
             edtDescripcion.setText(editDia.getContenido());
             tvFecha.setText(editDia.getFechaFormatoLocal());
             for(int i = 0; i < spnValorarDia.getCount(); i++){
-                if((int)spnValorarDia.getItemAtPosition(i) == editDia.getValoracionDia()){
+                if(Integer.parseInt(String.valueOf(spnValorarDia.getItemAtPosition(i))) == editDia.getValoracionDia()){
                     spnValorarDia.setSelection(i);
                 }
             }
         } else {
             this.setTitle(getString(R.string.NuevoTitulo));
+            dia = new DiaDiario(calendar.getTime(), 0,"","");
+            dia.setFecha(calendar.getTime());
+            tvFecha.setText(dia.getFechaFormatoLocal());
         }
+
         ibFecha.setOnClickListener(v -> {
             Calendar newCalendar = Calendar.getInstance();
 
@@ -67,9 +72,9 @@ public class EdicionDiaActivity extends AppCompatActivity {
 
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
                     calendar.set(year, monthOfYear, dayOfMonth);
-                    tvFecha.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
+                    dia.setFecha(calendar.getTime());
+                    tvFecha.setText(dia.getFechaFormatoLocal());
                 }
 
             }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
@@ -77,12 +82,12 @@ public class EdicionDiaActivity extends AppCompatActivity {
         });
 
         fabGuardar.setOnClickListener( v -> {
-            if(edtDescripcion.getText().length()!=0 && edtResumen.getText().length()!=0 && tvFecha.getText().length()!=0 && (int)spnValorarDia.getSelectedItem()>-1 && (int)spnValorarDia.getSelectedItem() < 11){
+            if(edtDescripcion.getText().length()!=0 && edtResumen.getText().length()!=0 && tvFecha.getText().length()!=0){
                 String resumen = edtResumen.getText().toString();
                 String contenido = edtDescripcion.getText().toString();
                 Date fecha = calendar.getTime();
-                int valoracion =(int) spnValorarDia.getSelectedItem();
-                DiaDiario dia;
+                int valoracion =Integer.parseInt(String.valueOf(spnValorarDia.getSelectedItem()));
+
                 if(editDia != null){
                     editDia.setContenido(contenido);
                     editDia.setResumen(resumen);
@@ -90,7 +95,7 @@ public class EdicionDiaActivity extends AppCompatActivity {
                     editDia.setValoracionDia(valoracion);
                     dia = editDia;
                 } else{
-                    dia = new DiaDiario(fecha, valoracion,resumen,contenido);
+                    dia = new DiaDiario(fecha,valoracion,resumen,contenido);
                 }
                 Intent intent = getIntent();
                 intent.putExtra(MainActivity.EXTRA_DIA, dia);

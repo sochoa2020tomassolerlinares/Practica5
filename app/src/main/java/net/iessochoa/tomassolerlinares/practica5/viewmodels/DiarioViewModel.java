@@ -22,7 +22,7 @@ public class DiarioViewModel extends AndroidViewModel {
         mAllDiarios = mRepository.getAllDiarios();
     }
 
-    public LiveData<List<DiaDiario>> getDiarioLiveData() {
+    public LiveData<List<DiaDiario>> getAllDiarios() {
         return mAllDiarios;
 
     }
