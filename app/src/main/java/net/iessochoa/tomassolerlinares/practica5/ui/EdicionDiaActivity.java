@@ -53,19 +53,35 @@ public class EdicionDiaActivity extends AppCompatActivity {
             edtResumen.setText(editDia.getResumen());
             edtDescripcion.setText(editDia.getContenido());
             tvFecha.setText(editDia.getFechaFormatoLocal());
-            for(int i = 0; i < spnValorarDia.getCount(); i++){
-                if(Integer.parseInt(String.valueOf(spnValorarDia.getItemAtPosition(i))) == editDia.getValoracionDia()){
+            for (int i = 0; i < spnValorarDia.getCount(); i++) {
+                if (Integer.parseInt(String.valueOf(spnValorarDia.getItemAtPosition(i))) == editDia.getValoracionDia()) {
                     spnValorarDia.setSelection(i);
                 }
             }
         } else {
             this.setTitle(getString(R.string.NuevoTitulo));
-            dia = new DiaDiario(calendar.getTime(), 0,"","");
+            dia = new DiaDiario(calendar.getTime(), 0, "", "");
             dia.setFecha(calendar.getTime());
             tvFecha.setText(dia.getFechaFormatoLocal());
         }
 
         ibFecha.setOnClickListener(v -> {
+            /*Calendar newCalendar = Calendar.getInstance();
+            DatePickerDialog dialogo = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(year, monthOfYear, dayOfMonth);
+                    fecha_cal=calendar.getTime();
+                    monthOfYear=monthOfYear+1; // Sumo 1 para que me muestre el mes correctamente
+                    tvfecha.setText(dayOfMonth+"/"+ monthOfYear+"/"+year);
+                }
+            },
+            newCalendar.get(Calendar.YEAR),
+            newCalendar.get(Calendar.MONTH),
+            newCalendar.get(Calendar.DAY_OF_MONTH)); //esto último es el dia a mostrar
+            dialogo.show();
+            */
             Calendar newCalendar = Calendar.getInstance();
 
             DatePickerDialog dialogo = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -73,35 +89,42 @@ public class EdicionDiaActivity extends AppCompatActivity {
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                     calendar.set(year, monthOfYear, dayOfMonth);
-                    dia.setFecha(calendar.getTime());
-                    tvFecha.setText(dia.getFechaFormatoLocal());
+                    Date fecha = calendar.getTime();
+                    monthOfYear++;
+                    if (editDia != null) {
+                        editDia.setFecha(calendar.getTime());
+                        tvFecha.setText(editDia.getFechaFormatoLocal());
+                    } else {
+                        dia.setFecha(calendar.getTime());
+                        tvFecha.setText(dia.getFechaFormatoLocal());
+                    }
+
                 }
 
             }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
             dialogo.show();
         });
 
-        fabGuardar.setOnClickListener( v -> {
-            if(edtDescripcion.getText().length()!=0 && edtResumen.getText().length()!=0 && tvFecha.getText().length()!=0){
+        fabGuardar.setOnClickListener(v -> {
+            if (edtDescripcion.getText().length() != 0 && edtResumen.getText().length() != 0 && tvFecha.getText().length() != 0) {
                 String resumen = edtResumen.getText().toString();
                 String contenido = edtDescripcion.getText().toString();
                 Date fecha = calendar.getTime();
-                int valoracion =Integer.parseInt(String.valueOf(spnValorarDia.getSelectedItem()));
+                int valoracion = Integer.parseInt(String.valueOf(spnValorarDia.getSelectedItem()));
 
-                if(editDia != null){
+                if (editDia != null) {
                     editDia.setContenido(contenido);
                     editDia.setResumen(resumen);
-                    editDia.setFecha(fecha);
                     editDia.setValoracionDia(valoracion);
                     dia = editDia;
-                } else{
-                    dia = new DiaDiario(fecha,valoracion,resumen,contenido);
+                } else {
+                    dia = new DiaDiario(fecha, valoracion, resumen, contenido);
                 }
                 Intent intent = getIntent();
                 intent.putExtra(MainActivity.EXTRA_DIA, dia);
                 setResult(RESULT_OK, intent);
                 finish();
-            }else{
+            } else {
                 Toast.makeText(this, getString(R.string.MensajeErrorDia), Toast.LENGTH_SHORT).show();
             }
         });
