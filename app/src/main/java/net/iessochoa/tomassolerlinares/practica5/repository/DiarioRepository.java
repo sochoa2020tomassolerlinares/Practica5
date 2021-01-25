@@ -50,7 +50,7 @@ public class DiarioRepository {
     }
 
 
-    public Single<Float> getValoracionTotal() {
+    public Single<Integer> getValoracionTotal() {
         return mdiarioDao.getValoracionTotal();
     }
 

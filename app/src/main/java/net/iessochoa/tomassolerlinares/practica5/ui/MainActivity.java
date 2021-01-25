@@ -1,5 +1,6 @@
 package net.iessochoa.tomassolerlinares.practica5.ui;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,10 +11,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -33,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private DiarioViewModel diarioViewModel;
     private RecyclerView rvDiario;
     private DiarioAdapter diarioAdapter;
+    private MenuItem ordenar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +62,13 @@ public class MainActivity extends AppCompatActivity {
                 Observer<List<DiaDiario>>() {
                     @Override
                     public void onChanged(List<DiaDiario> diario) {
-                        diarioAdapter.setDiario(diario);
-                        Log.d("P5", "tamaño: " + diario.size());
+                        diarioAdapter.setDiario(diarioViewModel.getAllDiariosList());
+                        diarioAdapter.notifyDataSetChanged();
                     }
                 });
+
+
+
 
         fabNuevo.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, EdicionDiaActivity.class);
@@ -115,5 +125,39 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }*/
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_ordenar:
+                    onCreateDialog();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+
+
+    private Dialog onCreateDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle(R.string.ordenarPor)
+                .setItems(R.array.opcionesOrdenar, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String ordenadoPor = "";
+                        switch (which) {
+                            case 0://fecha
+                                ordenadoPor=DiaDiario.FECHA;
+                                break;
+                            case 1://valoracion
+                                ordenadoPor=DiaDiario.VALORACION_DIA;
+                                break;
+                            case 2://resumen
+                                ordenadoPor=DiaDiario.RESUMEN;
+                                break;
+                        }
+                        diarioViewModel.setOrderBy(ordenadoPor);
+                    }
+                });
+        return builder.create();
     }
 }

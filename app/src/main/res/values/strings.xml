@@ -23,6 +23,7 @@
     <string name="Aviso">Aviso</string>
     <string name="AvisoMsn">¿Está seguro de eliminar esta página del diario?</string>
     <string name="CancelBorrar">No se ha eliminado el dia del diario.</string>
+    <string name="ordenarPor">Ordenar por</string>
     <string-array name="valoracionDia">
         <item>1</item>
         <item>2</item>
@@ -34,5 +35,10 @@
         <item>8</item>
         <item>9</item>
         <item>10</item>
+    </string-array>
+    <string-array name="opcionesOrdenar">
+        <item>Fecha</item>
+        <item>Valoración</item>
+        <item>Resumen</item>
     </string-array>
 </resources>

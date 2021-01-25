@@ -25,8 +25,14 @@ public interface DiarioDao {
     public void deleteAll();
     @Query("SELECT * FROM "+DiaDiario.TABLE_NAME+" ORDER BY fecha")
     public LiveData<List<DiaDiario>> getAllDiario();
-    @Query("SELECT * FROM Diario WHERE resumen LIKE :resumen ORDER BY :sort_By ASC")
-    public LiveData<List<DiaDiario>> getDiarioOrderBy(String resumen, String sort_By);
+    @Query("SELECT * FROM  " +DiaDiario.TABLE_NAME +
+            " WHERE " +DiaDiario.RESUMEN +" LIKE '%' || :resumen || '%' "+
+            " ORDER BY " +
+            "CASE WHEN :sort_by = '"+DiaDiario.FECHA+"'  THEN "+DiaDiario.FECHA+" END ASC, " +
+            "CASE WHEN :sort_by = '"+DiaDiario.RESUMEN+"'  THEN "+DiaDiario.RESUMEN+" END ASC, " +
+            "CASE WHEN :sort_by = '"+DiaDiario.VALORACION_DIA+"'  THEN "+DiaDiario.VALORACION_DIA+" END ASC"
+    )
+    public LiveData<List<DiaDiario>> getDiarioOrderBy(String resumen, String sort_by);
     @Query("SELECT SUM(" +DiaDiario.VALORACION_DIA + ") FROM " + DiaDiario.TABLE_NAME)
-    public Single<Float> getValoracionTotal();
+    public Single<Integer> getValoracionTotal();
 }
