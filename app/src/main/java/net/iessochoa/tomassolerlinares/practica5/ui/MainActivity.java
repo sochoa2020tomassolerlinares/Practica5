@@ -68,8 +68,6 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
-
-
         fabNuevo.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, EdicionDiaActivity.class);
             startActivityForResult(intent, OPTION_REQUEST_NUEVO);
@@ -92,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Método encargado de editar una tarea.
+     *
      * @param dia
      */
     private void editarDia(final DiaDiario dia) {
@@ -129,35 +128,57 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_ordenar:
-                    onCreateDialog();
-                break;
+                onCreateDialogOrdenar().show();
+                return true;
+            case R.id.action_about:
+                onCreateDialogAbout().show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
-
     }
 
 
-    private Dialog onCreateDialog() {
+    private Dialog onCreateDialogOrdenar() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle(R.string.ordenarPor)
                 .setItems(R.array.opcionesOrdenar, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         String ordenadoPor = "";
                         switch (which) {
                             case 0://fecha
-                                ordenadoPor=DiaDiario.FECHA;
+                                ordenadoPor = DiaDiario.FECHA;
                                 break;
                             case 1://valoracion
-                                ordenadoPor=DiaDiario.VALORACION_DIA;
+                                ordenadoPor = DiaDiario.VALORACION_DIA;
                                 break;
                             case 2://resumen
-                                ordenadoPor=DiaDiario.RESUMEN;
+                                ordenadoPor = DiaDiario.RESUMEN;
                                 break;
                         }
                         diarioViewModel.setOrderBy(ordenadoPor);
                     }
                 });
+        return builder.create();
+    }
+
+    private Dialog onCreateDialogAbout() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage(R.string.aboutInfo)
+                .setTitle(R.string.about)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        return builder.create();
+    }
+
+    private Dialog onCreateDialogValoracion(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         return builder.create();
     }
 }

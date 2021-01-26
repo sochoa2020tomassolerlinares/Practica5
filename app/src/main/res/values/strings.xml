@@ -24,6 +24,11 @@
     <string name="AvisoMsn">¿Está seguro de eliminar esta página del diario?</string>
     <string name="CancelBorrar">No se ha eliminado el dia del diario.</string>
     <string name="ordenarPor">Ordenar por</string>
+    <string name="aboutInfo">Práctica 5\n
+        V 1.0\n
+        Tomás Soler Linares\n
+        Licencia CC\n
+        (Creative Commons)</string>
     <string-array name="valoracionDia">
         <item>1</item>
         <item>2</item>
