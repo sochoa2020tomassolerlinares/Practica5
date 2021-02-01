@@ -66,22 +66,6 @@ public class EdicionDiaActivity extends AppCompatActivity {
         }
 
         ibFecha.setOnClickListener(v -> {
-            /*Calendar newCalendar = Calendar.getInstance();
-            DatePickerDialog dialogo = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.set(year, monthOfYear, dayOfMonth);
-                    fecha_cal=calendar.getTime();
-                    monthOfYear=monthOfYear+1; // Sumo 1 para que me muestre el mes correctamente
-                    tvfecha.setText(dayOfMonth+"/"+ monthOfYear+"/"+year);
-                }
-            },
-            newCalendar.get(Calendar.YEAR),
-            newCalendar.get(Calendar.MONTH),
-            newCalendar.get(Calendar.DAY_OF_MONTH)); //esto último es el dia a mostrar
-            dialogo.show();
-            */
             Calendar newCalendar = Calendar.getInstance();
 
             DatePickerDialog dialogo = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {

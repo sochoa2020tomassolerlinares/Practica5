@@ -84,6 +84,10 @@ public class DiarioAdapter extends RecyclerView.Adapter<DiarioAdapter.DiarioView
             });
 
         }
+        public DiaDiario getDia(){
+            return listaDias.get(DiarioViewHolder.this.getAdapterPosition());
+        }
+
     }
 
     public interface OnItemClickBorrarListener {

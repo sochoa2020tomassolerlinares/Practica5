@@ -33,6 +33,6 @@ public interface DiarioDao {
             "CASE WHEN :sort_by = '"+DiaDiario.VALORACION_DIA+"'  THEN "+DiaDiario.VALORACION_DIA+" END ASC"
     )
     public LiveData<List<DiaDiario>> getDiarioOrderBy(String resumen, String sort_by);
-    @Query("SELECT SUM(" +DiaDiario.VALORACION_DIA + ") FROM " + DiaDiario.TABLE_NAME)
+    @Query("SELECT AVG(" +DiaDiario.VALORACION_DIA + ") FROM " + DiaDiario.TABLE_NAME)
     public Single<Integer> getValoracionTotal();
 }
