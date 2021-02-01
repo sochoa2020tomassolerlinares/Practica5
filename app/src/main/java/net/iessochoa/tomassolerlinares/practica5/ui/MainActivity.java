@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-
         fabNuevo.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, EdicionDiaActivity.class);
             startActivityForResult(intent, OPTION_REQUEST_NUEVO);
