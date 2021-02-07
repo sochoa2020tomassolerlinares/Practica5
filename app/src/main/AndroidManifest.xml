@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Practica5">
-        <activity android:name=".ui.EdicionDiaActivity"></activity>
+        <activity android:name=".ui.OpcionesActivity"></activity>
+        <activity android:name=".ui.EdicionDiaActivity" />
         <activity
             android:name=".ui.MainActivity"
             android:theme="@style/Theme.Practica5.NoActionBar">

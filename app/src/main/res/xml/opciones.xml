@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="preference_datosPersonales"
+        android:title="@string/datosPersonales">
+
+        <EditTextPreference
+            android:key="preference_nombre"
+            android:summary="@string/nombreSummary"
+            android:title="@string/nombreTitle" />
+
+        <EditTextPreference
+            android:key="preference_fechaCumple"
+            android:summary="@string/fechaPreference"
+            android:title="@string/fechaPreference" />
+
+        <ListPreference
+            android:dialogTitle="@string/sexoTitle"
+            android:entries="@array/sexo"
+            android:entryValues="@array/sexo"
+            android:key="preference_sexo"
+            android:summary="@string/sexoSummary"
+            android:title="@string/sexoTitle" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="preference_datosPrograma"
+        android:title="@string/config">
+
+        <SwitchPreference
+            android:icon="@mipmap/ic_avisar_diario"
+            android:key="preference_avisarDiario"
+            android:summary="@string/avisarDiarioSummay"
+            android:title="@string/avisarDiarioTitle" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

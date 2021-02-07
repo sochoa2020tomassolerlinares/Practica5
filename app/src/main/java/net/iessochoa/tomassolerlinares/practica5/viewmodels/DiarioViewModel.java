@@ -1,6 +1,8 @@
 package net.iessochoa.tomassolerlinares.practica5.viewmodels;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 import androidx.arch.core.util.Function;
@@ -18,12 +20,13 @@ import java.util.List;
 import io.reactivex.Single;
 
 public class DiarioViewModel extends AndroidViewModel {
+    private static final String PREFERENCIAS = "MisPreferencias";
     private DiarioRepository mRepository;
     private LiveData<List<DiaDiario>> mAllDiarios;
-    private MutableLiveData<HashMap<String, Object>> condicionBusquedaLiveData;
-    private final String RESUMEN = "resumen";
-    private final String ORDER_BY = "order_by";
-    private final String ORDER = "order";
+    public MutableLiveData<HashMap<String, Object>> condicionBusquedaLiveData;
+    public final String RESUMEN = "resumen";
+    public final String ORDER_BY = "order_by";
+    public final String ORDER = "order";
     //podremos elegir ascendente y descendente
     public static final String ORDENAR_ASC = "ASC";
     public static final String ORDENAR_DESC = "DESC";
@@ -50,6 +53,12 @@ public class DiarioViewModel extends AndroidViewModel {
         condicionBusquedaLiveData.setValue(condiciones);
         //switchMap nos  permite cambiar el livedata de la consulta SQL
         // al modificarse la consulta de busqueda(cuando cambia condicionBusquedaLiveData)
+
+        SharedPreferences prefs =application.getSharedPreferences(PREFERENCIAS,Context.MODE_PRIVATE);
+        String resumen=prefs.getString(RESUMEN, "");
+        condiciones.put(RESUMEN,resumen);//es el HashMap
+        String orden=prefs.getString(ORDER_BY,DiaDiario.FECHA);
+        condiciones.put(ORDER_BY,orden);
 
         mAllDiarios = Transformations.switchMap(condicionBusquedaLiveData, new Function<HashMap<String, Object>, LiveData<List<DiaDiario>>>() {
             @Override
@@ -78,6 +87,11 @@ public class DiarioViewModel extends AndroidViewModel {
         condicionBusquedaLiveData.setValue(condiciones);
     }
 
+    public String getResumen(){
+        HashMap<String, Object> condiciones = condicionBusquedaLiveData.getValue();
+        return(String)condiciones.get(RESUMEN);
+    }
+
     public void setOrderBy(String orderBy) {
         HashMap<String, Object> condiciones = condicionBusquedaLiveData.getValue();
         String ordenar = "";
@@ -95,11 +109,9 @@ public class DiarioViewModel extends AndroidViewModel {
         condicionBusquedaLiveData.setValue(condiciones);
     }
 
-    public void setOrder(Order order) {
+    public String getOrder(){
         HashMap<String, Object> condiciones = condicionBusquedaLiveData.getValue();
-
-        condiciones.put(ORDER, order.toString());
-        condicionBusquedaLiveData.setValue(condiciones);
+        return(String) condiciones.get(ORDER_BY);
     }
 
     //Inserción y borrado que se reflejará automáticamente gracias al observador creado en la

@@ -30,6 +30,14 @@
         Tomás Soler Linares\n
         Licencia CC\n
         (Creative Commons)</string>
+    <string name="datosPersonales">Datos personales</string>
+    <string name="config">Configuración programa</string>
+    <string name="nombreSummary">Con que nombre quieres que nos dirijamos a ti</string>
+    <string name="nombreTitle">Cuál es tu nombre</string>
+    <string name="fechaPreference">Fecha cumpleaños</string>
+    <string name="sexoSummary">Eres un/una...</string>
+    <string name="sexoTitle">Eres...</string>
+    <string name="avisarDiarioSummay">Desea que le avisemos que tiene que escribir en el diario</string>
     <string-array name="valoracionDia">
         <item>1</item>
         <item>2</item>
@@ -47,4 +55,28 @@
         <item>Valoración</item>
         <item>Resumen</item>
     </string-array>
+    <string-array name="sexo">
+        <item>Chico</item>
+        <item>Chica</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="avisarDiarioTitle">Avisar escribir en Diario</string>
+    <string name="tituloP">"P5 - "</string>
+    <string name="nombreGenerico">Nuevo diario</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="title_intent_preference">intent</string>
 </resources>

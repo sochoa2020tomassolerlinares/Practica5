@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,9 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +30,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -46,12 +51,15 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_DIA = "net.iessochoa.tomassolerlinares.practica5.ui.mainactivity.extra_dia";
     public static final int OPTION_REQUEST_NUEVO = 1, OPTION_REQUEST_EDIT = 2;
+    private static final String PREFERENCIAS = "MisPreferencias";
     private DiarioViewModel diarioViewModel;
     private RecyclerView rvDiario;
     private DiarioAdapter diarioAdapter;
+    private SearchView svBusqueda;
     private MenuItem ordenar;
+    private SharedPreferences preferencias;
 
-
+    //Método que crea los datos al iniciar la aplicación
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +68,11 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fabNuevo = findViewById(R.id.fabNuevo);
+        PreferenceManager.setDefaultValues(this, R.xml.opciones, false);
+        preferencias = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
+        FloatingActionButton fabNuevo = findViewById(R.id.fabNuevo);
+        //Declara el adapter y el recyclerView
         diarioAdapter = new DiarioAdapter();
         rvDiario = findViewById(R.id.rvDiario);
         int orientation = getResources().getConfiguration().orientation;
@@ -73,16 +84,30 @@ public class MainActivity extends AppCompatActivity {
         rvDiario.setHasFixedSize(true);
         rvDiario.setAdapter(diarioAdapter);
 
+        //Añade los datos del viewmodel al recyclerView
         diarioViewModel = new ViewModelProvider(this).get(DiarioViewModel.class);
-        diarioViewModel.getAllDiarios().observe(this, new
-                Observer<List<DiaDiario>>() {
-                    @Override
-                    public void onChanged(List<DiaDiario> diario) {
-                        diarioAdapter.setDiario(diarioViewModel.getAllDiariosList());
-                        diarioAdapter.notifyDataSetChanged();
-                    }
-                });
+        diarioViewModel.getAllDiarios().observe(this, diario -> {
+            diarioAdapter.setDiario(diarioViewModel.getAllDiariosList());
+            diarioAdapter.notifyDataSetChanged();
+        });
 
+        svBusqueda = findViewById(R.id.svBusqueda);
+
+        svBusqueda.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                diarioViewModel.setResumen(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+
+        //Añade funciones al tocar botones de la app.
         fabNuevo.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, EdicionDiaActivity.class);
             startActivityForResult(intent, OPTION_REQUEST_NUEVO);
@@ -94,7 +119,58 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void borrarDia( final DiaDiario dia) {
+    //Método que se ejecuta al pausar la aplicación
+    @Override
+    public void onPause() {
+        super.onPause();
+        //guardamos el orden y búsqueda actual
+        guardarBusquedaPreferencias();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        preferencias = PreferenceManager.getDefaultSharedPreferences(this);
+        defineTituloApp();
+        leerEstiloChicoChica();
+        avisarEscribirDiario();
+    }
+
+    private void avisarEscribirDiario() {
+    }
+
+    private void leerEstiloChicoChica() {
+        String sexo = preferencias.getString("preference_sexo", "none");
+        switch (sexo){
+            case "Chico":
+                rvDiario.setBackgroundColor(Color.parseColor("#add8e6"));
+                break;
+            case "Chica":
+                rvDiario.setBackgroundColor(Color.parseColor("#ffb6c1"));
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void defineTituloApp() {
+        int pantalla = (getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK);
+        if ((pantalla == Configuration.SCREENLAYOUT_SIZE_LARGE) || pantalla == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+            setTitle(getString(R.string.tituloP) + preferencias.getString("preference_nombre", getString(R.string.nombreGenerico)));
+        }
+    }
+
+    private void guardarBusquedaPreferencias() {
+        SharedPreferences prefs = getSharedPreferences(PREFERENCIAS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(diarioViewModel.RESUMEN, diarioViewModel.getResumen());
+        editor.putString(diarioViewModel.ORDER_BY, diarioViewModel.getOrder());
+        editor.commit();
+    }
+
+    //Borra un dia de la base de datos
+    private void borrarDia(final DiaDiario dia) {
         AlertDialog.Builder dialogo = new AlertDialog.Builder(MainActivity.this);
         dialogo.setTitle(getString(R.string.Aviso));
 
@@ -105,7 +181,8 @@ public class MainActivity extends AppCompatActivity {
         dialogo.show();
     }
 
-    private void borrarDia( final DiaDiario dia, int posicion) {
+    //Borra un dia de la base de datos desde el evento swiper
+    private void borrarDia(final DiaDiario dia, int posicion) {
         AlertDialog.Builder dialogo = new AlertDialog.Builder(MainActivity.this);
         dialogo.setTitle(getString(R.string.Aviso));
 
@@ -115,39 +192,32 @@ public class MainActivity extends AppCompatActivity {
         dialogo.setNegativeButton(android.R.string.no, (dialogInterface, i) -> Toast.makeText(this, R.string.CancelBorrar, Toast.LENGTH_SHORT).show());
         dialogo.show();
 
-        dialogo.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        diarioAdapter.notifyItemChanged(posicion);//recuperamos la posición
-                    }
-                });
-        dialogo.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // Borramos
-                        diarioViewModel.delete(dia);
-                    }
-                });
+        dialogo.setNegativeButton(android.R.string.cancel, (dialogInterface, i) -> {
+            diarioAdapter.notifyItemChanged(posicion);//recuperamos la posición
+        });
+        dialogo.setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
+            // Borramos
+            diarioViewModel.delete(dia);
+        });
         dialogo.show();
     }
 
-    /**
-     * Método encargado de editar una tarea.
-     *
-     * @param dia
-     */
+
+    //Edita una tarea
     private void editarDia(final DiaDiario dia) {
         Intent intent = new Intent(this, EdicionDiaActivity.class);
         intent.putExtra(EXTRA_DIA, dia);
         startActivityForResult(intent, OPTION_REQUEST_EDIT);
     }
 
+    //Inicia el menú
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
+    //Recibe datos de una actividad llamada anteriormente
     @SuppressLint("ResourceType")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -158,17 +228,10 @@ public class MainActivity extends AppCompatActivity {
             Bundle bundle = data.getExtras();
             DiaDiario dia = bundle.getParcelable(EXTRA_DIA);
             diarioViewModel.insert(dia);
-            /*switch (requestCode) {
-                case OPTION_REQUEST_NUEVO:
-
-                    break;
-                case OPTION_REQUEST_EDIT:
-
-                    break;
-            }*/
         }
     }
 
+    //Establece las opciones de los items del menú
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -180,12 +243,15 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_valoravida:
                 onCreateDialogValoracion();
+                return true;
+            case R.id.action_setting:
+                startActivity(new Intent(MainActivity.this, OpcionesActivity.class));
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-
+    //Devuelve un diálogo con las opciones a ordenar
     private Dialog onCreateDialogOrdenar() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle(R.string.ordenarPor)
                 .setItems(R.array.opcionesOrdenar, new DialogInterface.OnClickListener() {
@@ -208,6 +274,7 @@ public class MainActivity extends AppCompatActivity {
         return builder.create();
     }
 
+    //Devuelve un diálogo con la información de la app
     private Dialog onCreateDialogAbout() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -222,6 +289,7 @@ public class MainActivity extends AppCompatActivity {
         return builder.create();
     }
 
+    //
     private void onCreateDialogValoracion() {
         diarioViewModel.getValoracionTotal()//obtenemos objeto reactivo de un solo uso 'Single' para que haga la consulta en un hilo
                 .subscribeOn(Schedulers.io())//el observable(la consulta sql) se ejecuta en uno diferente
