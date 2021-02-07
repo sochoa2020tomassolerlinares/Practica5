@@ -79,4 +79,6 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="title_intent_preference">intent</string>
+    <string name="elegirFoto">Tomar foto</string>
+    <string name="elegirGaleria">Elegir de la galería</string>
 </resources>

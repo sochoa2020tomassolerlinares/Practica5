@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void leerEstiloChicoChica() {
         String sexo = preferencias.getString("preference_sexo", "none");
-        switch (sexo){
+        switch (sexo) {
             case "Chico":
                 rvDiario.setBackgroundColor(Color.parseColor("#add8e6"));
                 break;
@@ -154,8 +154,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void defineTituloApp() {
-        int pantalla = (getResources().getConfiguration().screenLayout &
-                Configuration.SCREENLAYOUT_SIZE_MASK);
+        int pantalla = (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK);
         if ((pantalla == Configuration.SCREENLAYOUT_SIZE_LARGE) || pantalla == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
             setTitle(getString(R.string.tituloP) + preferencias.getString("preference_nombre", getString(R.string.nombreGenerico)));
         }
@@ -254,22 +253,20 @@ public class MainActivity extends AppCompatActivity {
     //Devuelve un diálogo con las opciones a ordenar
     private Dialog onCreateDialogOrdenar() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle(R.string.ordenarPor)
-                .setItems(R.array.opcionesOrdenar, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        String ordenadoPor = "";
-                        switch (which) {
-                            case 0://fecha
-                                ordenadoPor = DiaDiario.FECHA;
-                                break;
-                            case 1://valoracion
-                                ordenadoPor = DiaDiario.VALORACION_DIA;
-                                break;
-                            case 2://resumen
-                                ordenadoPor = DiaDiario.RESUMEN;
-                                break;
-                        }
-                        diarioViewModel.setOrderBy(ordenadoPor);
+                .setItems(R.array.opcionesOrdenar, (dialog, which) -> {
+                    String ordenadoPor = "";
+                    switch (which) {
+                        case 0://fecha
+                            ordenadoPor = DiaDiario.FECHA;
+                            break;
+                        case 1://valoracion
+                            ordenadoPor = DiaDiario.VALORACION_DIA;
+                            break;
+                        case 2://resumen
+                            ordenadoPor = DiaDiario.RESUMEN;
+                            break;
                     }
+                    diarioViewModel.setOrderBy(ordenadoPor);
                 });
         return builder.create();
     }
@@ -320,12 +317,7 @@ public class MainActivity extends AppCompatActivity {
                             builder.setView(v);
                         }
 
-
-                        builder.setPositiveButton(getString(R.string.OK), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
+                        builder.setPositiveButton(getString(R.string.OK), (dialog, id) -> dialog.cancel());
 
                         builder.create().show();
                     }
@@ -343,18 +335,12 @@ public class MainActivity extends AppCompatActivity {
                 ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT |
                         ItemTouchHelper.RIGHT) {
                     @Override
-                    public boolean onMove(RecyclerView recyclerView,
-                                          RecyclerView.ViewHolder viewHolder,
-                                          RecyclerView.ViewHolder target) {
+                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                         return false;
                     }
 
                     @Override
-                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int
-                            swipeDir) {
-                        //realizamos un cast del viewHolder y obtenemos el pokemon a
-                        // borrar
-                        // PokemonListaPokemon
+                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                         DiarioAdapter.DiarioViewHolder vhDiario = (DiarioAdapter.DiarioViewHolder) viewHolder;
                         DiaDiario dia = vhDiario.getDia();
                         borrarDia(dia, vhDiario.getAdapterPosition());

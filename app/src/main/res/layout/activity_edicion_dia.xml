@@ -4,8 +4,102 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2196F3"
-    tools:context=".ui.EdicionDiaActivity">
+    tools:context=".ui.EdicionDiaActivity"
+    android:id="@+id/clPrincipal">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvEditDia"
+        android:layout_width="390dp"
+        android:layout_height="182dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintBottom_toTopOf="@+id/svDescrpcion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.482"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivFoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/spnValoraDia"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@android:drawable/ic_menu_report_image"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                />
+
+            <EditText
+                android:id="@+id/edtBreveResumen"
+                android:layout_width="277dp"
+                android:layout_height="46dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:ems="10"
+                android:hint="@string/breveResumen"
+                android:inputType="textPersonName"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/ivFoto"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvValoraDia" />
+
+            <Spinner
+                android:id="@+id/spnValoraDia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="72dp"
+                android:entries="@array/valoracionDia"
+                app:layout_constraintBottom_toTopOf="@+id/edtBreveResumen"
+                app:layout_constraintEnd_toStartOf="@+id/ivFoto"
+                app:layout_constraintStart_toEndOf="@+id/tvValoraDia"
+                app:layout_constraintTop_toBottomOf="@+id/ibFecha" />
+
+            <ImageButton
+                android:id="@+id/ibFecha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="100dp"
+                app:layout_constraintBottom_toTopOf="@+id/spnValoraDia"
+                app:layout_constraintEnd_toStartOf="@+id/ivFoto"
+                app:layout_constraintStart_toEndOf="@+id/tvFecha"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@android:drawable/ic_menu_month" />
+
+            <TextView
+                android:id="@+id/tvValoraDia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/valoradia"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@+id/edtBreveResumen"
+                app:layout_constraintEnd_toStartOf="@+id/spnValoraDia"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ibFecha" />
+
+            <TextView
+                android:id="@+id/tvFecha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="@string/fechaPorDefecto"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@+id/tvValoraDia"
+                app:layout_constraintEnd_toStartOf="@+id/ibFecha"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabGuardar"
@@ -20,74 +114,28 @@
         app:layout_constraintVertical_bias="0.95"
         app:srcCompat="@android:drawable/ic_menu_save" />
 
-    <TextView
-        android:id="@+id/tvFecha"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/fechaPorDefecto"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/spnValoraDia"
-        app:layout_constraintEnd_toStartOf="@id/ibFecha"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/ibFecha"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddImage"
         android:layout_width="56dp"
-        android:layout_height="51dp"
-        app:layout_constraintBottom_toTopOf="@+id/spnValoraDia"
-        app:layout_constraintEnd_toStartOf="@+id/edtBreveResumen"
-        app:layout_constraintStart_toEndOf="@+id/tvFecha"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_month" />
-
-    <EditText
-        android:id="@+id/edtBreveResumen"
-        android:layout_width="210dp"
-        android:layout_height="45dp"
-        android:ems="10"
-        android:hint="@string/breveResumen"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/spnValoraDia"
+        android:layout_height="56dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ibFecha"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvValoraDia"
-        android:layout_width="99dp"
-        android:layout_height="27dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/valoradia"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/svDescrpcion"
-        app:layout_constraintEnd_toStartOf="@+id/spnValoraDia"
+        app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ibFecha"
-        app:layout_constraintVertical_bias="0.65" />
-
-    <Spinner
-        android:id="@+id/spnValoraDia"
-        android:layout_width="82dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:entries="@array/valoracionDia"
-        app:layout_constraintBottom_toTopOf="@+id/svDescrpcion"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvValoraDia"
-        app:layout_constraintTop_toBottomOf="@+id/ibFecha" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95"
+        app:srcCompat="@android:drawable/ic_menu_gallery" />
 
     <ScrollView
         android:id="@+id/svDescrpcion"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="412dp"
+        android:layout_height="552dp"
         android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spnValoraDia">
+        app:layout_constraintTop_toBottomOf="@id/cvEditDia">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -102,6 +150,7 @@
                 android:gravity="start|top"
                 android:hint="@string/descripcion"
                 android:inputType="textMultiLine" />
+
         </LinearLayout>
     </ScrollView>
 
