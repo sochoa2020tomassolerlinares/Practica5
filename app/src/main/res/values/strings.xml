@@ -81,4 +81,9 @@
     <string name="title_intent_preference">intent</string>
     <string name="elegirFoto">Tomar foto</string>
     <string name="elegirGaleria">Elegir de la galería</string>
+    <string name="seleccionarImagen">Seleccione una imagen</string>
+    <string name="permisosAceptados">Permisos aceptados</string>
+    <string name="peticionPermisos">Petición de Permisos</string>
+    <string name="peticionPermisosMensaje">Necesito los permisos para seleccionar una foto</string>
+    <string name="solicitarPermisos">Necesito los permisos para poder elegir una foto</string>
 </resources>

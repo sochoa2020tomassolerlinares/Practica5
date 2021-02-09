@@ -10,6 +10,9 @@ import android.preference.PreferenceFragment;
 
 import net.iessochoa.tomassolerlinares.practica5.R;
 
+/**
+ * Clase donde se lanza el fragment de Opciones
+ */
 public class OpcionesActivity  extends PreferenceActivity {
 
     @Override

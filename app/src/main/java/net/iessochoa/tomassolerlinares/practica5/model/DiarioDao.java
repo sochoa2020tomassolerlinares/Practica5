@@ -12,6 +12,9 @@ import java.util.List;
 
 import io.reactivex.Single;
 
+/**
+ * Clase Dao donde se establecen las consultas que va a realizar nuestro programa
+ */
 @Dao
 public interface DiarioDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)

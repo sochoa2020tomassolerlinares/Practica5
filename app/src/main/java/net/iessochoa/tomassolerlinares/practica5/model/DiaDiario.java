@@ -10,9 +10,12 @@ import androidx.room.*;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+/**
+ * Clase POJO encargada de definir el objeto DiaDiario
+ */
 @Entity(tableName = DiaDiario.TABLE_NAME,
         indices = {@Index(value = {DiaDiario.FECHA},unique = true)})
-
 public class DiaDiario implements Parcelable {
     public static final String TABLE_NAME="diario";
     public static final String ID= BaseColumns._ID;

@@ -17,7 +17,7 @@ import net.iessochoa.tomassolerlinares.practica5.model.DiaDiario;
 import java.util.List;
 
 /**
- * Clase encargada de
+ * Clase encargada de detectar las llamadas del usuario a sus respectivas funciones
  */
 
 public class DiarioAdapter extends RecyclerView.Adapter<DiarioAdapter.DiarioViewHolder> {
@@ -26,7 +26,7 @@ public class DiarioAdapter extends RecyclerView.Adapter<DiarioAdapter.DiarioView
     private OnItemClickBorrarListener listenerBorrar;
     private OnItemClickEditarListener listenerEditar;
 
-
+    //Método que se inicia cuando se crea el viewmHolder
     @NonNull
     @Override
     public DiarioViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -34,7 +34,7 @@ public class DiarioAdapter extends RecyclerView.Adapter<DiarioAdapter.DiarioView
                 .inflate(R.layout.item_dia, parent, false);
         return new DiarioViewHolder(itemView);
     }
-
+    //Método que se lanza cuando se detecta conecta el viewHolder y establece los datos almacenados en sus repectivos contenedores xml
     @Override
     public void onBindViewHolder(@NonNull DiarioAdapter.DiarioViewHolder diarioViewHolder, int position) {
         if (listaDias != null) {
@@ -52,6 +52,7 @@ public class DiarioAdapter extends RecyclerView.Adapter<DiarioAdapter.DiarioView
         }
     }
 
+    //Devuelve el tamaño de la lista de dias
     @Override
     public int getItemCount() {
         if (listaDias!= null)
@@ -59,11 +60,13 @@ public class DiarioAdapter extends RecyclerView.Adapter<DiarioAdapter.DiarioView
         else return 0;
     }
 
+    //Carga un diario en la clase
     public void setDiario(List<DiaDiario> listTarea) {
         listaDias = listTarea;
         notifyDataSetChanged();
     }
 
+    //Clase encargada de declarar el viewHolder del adapter
     public class DiarioViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvResumen;
         private final TextView tvFecha;
@@ -71,6 +74,7 @@ public class DiarioAdapter extends RecyclerView.Adapter<DiarioAdapter.DiarioView
         private final ImageView ivDelete;
         private final CardView cardView;
 
+        //Constructor del ViewHolder
         private DiarioViewHolder(@NonNull View itemView) {
             super(itemView);
             tvResumen = itemView.findViewById(R.id.tvResumen);
@@ -88,24 +92,29 @@ public class DiarioAdapter extends RecyclerView.Adapter<DiarioAdapter.DiarioView
             });
 
         }
+        //Devuelve un dia seleccionado
         public DiaDiario getDia(){
             return listaDias.get(DiarioViewHolder.this.getAdapterPosition());
         }
 
     }
 
+    //Interfaz que declara el listener borrar
     public interface OnItemClickBorrarListener {
         void onItemClickBorrar(DiaDiario dia);
     }
 
+    //Interfaz que declara el listener editar
     public interface OnItemClickEditarListener{
         void onItemClickEditar(DiaDiario dia);
     }
 
+    //Método que llama al listener editar
     public void setOnClickEditarListener(OnItemClickEditarListener listener){
         this.listenerEditar = listener;
     }
 
+    //Método que llama al listener borrar
     public void setOnClickBorrarListener(OnItemClickBorrarListener listener){
         this.listenerBorrar = listener;
     }

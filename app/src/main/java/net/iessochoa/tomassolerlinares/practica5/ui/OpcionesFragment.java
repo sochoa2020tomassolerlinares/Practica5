@@ -15,6 +15,9 @@ import android.view.ViewGroup;
 
 import net.iessochoa.tomassolerlinares.practica5.R;
 
+/**
+ * Clase Fragment donde se visualiza el PreferenceScreen de opciones
+ */
 public class OpcionesFragment extends PreferenceFragment {
     private ListPreference mListPreference;
 

@@ -12,6 +12,9 @@ import java.util.List;
 
 import io.reactivex.Single;
 
+/**
+ * Clase encargada de trabajar con el repositorio mediante la clase Dao
+ */
 public class DiarioRepository {
     //implementamos Singleton
     private static volatile DiarioRepository INSTANCE;
@@ -20,6 +23,7 @@ public class DiarioRepository {
     private LiveData<List<DiaDiario>> mAllDiarios;
     //singleton
 
+    //Método estático que devuelve la estancia en la que se ubica el programa
     public static DiarioRepository getInstance(Application application) {
         if (INSTANCE == null) {
             synchronized (DiarioRepository.class) {
@@ -31,6 +35,7 @@ public class DiarioRepository {
         return INSTANCE;
     }
 
+    //Constructor del repositorio
     private DiarioRepository(Application application) {
         //creamos la base de datos
         DiarioDatabase db = DiarioDatabase.getDatabase(application);
@@ -40,16 +45,18 @@ public class DiarioRepository {
         mAllDiarios = mdiarioDao.getAllDiario();
     }
 
+    //Devuelve todos los diarios almacenados
     public LiveData<List<DiaDiario>> getAllDiarios() {
         return mAllDiarios;
     }
 
+    //Devuelve los diarios ordenados por resumen
     public LiveData<List<DiaDiario>> getDiariosOrderBy(String nombre, String resumen) {
         mAllDiarios = mdiarioDao.getDiarioOrderBy(nombre, resumen);
         return mAllDiarios;
     }
 
-
+    //Devuelve la valoración total del diario
     public Single<Integer> getValoracionTotal() {
         return mdiarioDao.getValoracionTotal();
     }

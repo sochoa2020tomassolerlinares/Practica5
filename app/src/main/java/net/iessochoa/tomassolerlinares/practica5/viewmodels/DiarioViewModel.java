@@ -19,6 +19,9 @@ import java.util.List;
 
 import io.reactivex.Single;
 
+/**
+ * Clase viewmodel encargada de definir las funciones de nuestro diario de cara al usuario
+ */
 public class DiarioViewModel extends AndroidViewModel {
     private static final String PREFERENCIAS = "MisPreferencias";
     private DiarioRepository mRepository;
@@ -38,6 +41,7 @@ public class DiarioViewModel extends AndroidViewModel {
         ASC, DESC;
     }
 
+    //Constructor del viewModel donde se definen las condiciones de búsqueda y se muestran como tal
     public DiarioViewModel(@NonNull Application application) {
         super(application);
         mRepository = DiarioRepository.getInstance(application);
@@ -68,30 +72,35 @@ public class DiarioViewModel extends AndroidViewModel {
         });
     }
 
+    //Devuelve todos los dias almacenados en el diario
     public LiveData<List<DiaDiario>> getAllDiarios() {
         return mAllDiarios;
 
     }
-
+    //Devuelve todos los dias almacenados en el diario en formato List
     public List<DiaDiario> getAllDiariosList(){
         return mAllDiarios.getValue();
     }
 
+    //Devuelve la valoración total del diario
     public Single<Integer> getValoracionTotal() {
         return mRepository.getValoracionTotal();
     }
 
+    //Establece el resumen como condición.
     public void setResumen(String resumen) {
         HashMap<String, Object> condiciones = condicionBusquedaLiveData.getValue();
         condiciones.put(RESUMEN, resumen);
         condicionBusquedaLiveData.setValue(condiciones);
     }
 
+    //Devuelve el resumen que se emplea como condición
     public String getResumen(){
         HashMap<String, Object> condiciones = condicionBusquedaLiveData.getValue();
         return(String)condiciones.get(RESUMEN);
     }
 
+    //Método que se encarga de ordenar dependiendo de la elección del usuario
     public void setOrderBy(String orderBy) {
         HashMap<String, Object> condiciones = condicionBusquedaLiveData.getValue();
         String ordenar = "";
@@ -109,6 +118,7 @@ public class DiarioViewModel extends AndroidViewModel {
         condicionBusquedaLiveData.setValue(condiciones);
     }
 
+    //Devuelve el orden de la condición actual
     public String getOrder(){
         HashMap<String, Object> condiciones = condicionBusquedaLiveData.getValue();
         return(String) condiciones.get(ORDER_BY);

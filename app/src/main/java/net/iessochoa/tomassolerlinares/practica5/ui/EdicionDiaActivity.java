@@ -41,6 +41,9 @@ import java.util.Date;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.Manifest.permission.CAMERA;
 
+/**
+ * Clase encargada del funcionamiento a la hora de crear o editar un dia del diario
+ */
 public class EdicionDiaActivity extends AppCompatActivity {
 
     private static final int MY_PERMISSIONS = 100;
@@ -57,13 +60,14 @@ public class EdicionDiaActivity extends AppCompatActivity {
 
     private static final int STATUS_CODE_SELECCION_IMAGEN = 300;
 
+    //Método que se ejecuta al iniciarse la activity
     @RequiresApi(api = Build.VERSION_CODES.M)
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edicion_dia);
-
+        //Se definen los contenedores del xml
         edtResumen = findViewById(R.id.edtBreveResumen);
         edtDescripcion = findViewById(R.id.edtDescripcion);
         spnValorarDia = findViewById(R.id.spnValoraDia);
@@ -74,7 +78,7 @@ public class EdicionDiaActivity extends AppCompatActivity {
         fabGuardar = findViewById(R.id.fabGuardar);
         fabAddImage = findViewById(R.id.fabAddImage);
 
-
+        //Recogemos los datos del intent en caso de que se esté editando
         DiaDiario editDia = getIntent().getParcelableExtra(MainActivity.EXTRA_DIA);
         if (editDia != null) {
             this.setTitle(getString(R.string.EditTitulo));
@@ -122,6 +126,7 @@ public class EdicionDiaActivity extends AppCompatActivity {
             dialogo.show();
         });
 
+        //Se establencen las funciones de los botones guardar y añadir imagen
         fabGuardar.setOnClickListener(v -> {
             if (edtDescripcion.getText().length() != 0 && edtResumen.getText().length() != 0 && tvFecha.getText().length() != 0) {
                 String resumen = edtResumen.getText().toString();
@@ -160,13 +165,14 @@ public class EdicionDiaActivity extends AppCompatActivity {
 
         });
     }
-
+    //Abre la galería para seleccionar una imagen
     private void elegirGaleria() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
-        startActivityForResult(intent.createChooser(intent, "Seleccione una imagen"), STATUS_CODE_SELECCION_IMAGEN);
+        startActivityForResult(intent.createChooser(intent, getString(R.string.seleccionarImagen)), STATUS_CODE_SELECCION_IMAGEN);
     }
 
+    //Muestra la imagen almacenada en el objeto diaDiario
     private void muestraFoto() {
         if(uriFoto != null){
             Glide.with(this)
@@ -178,6 +184,7 @@ public class EdicionDiaActivity extends AppCompatActivity {
         }
     }
 
+    //Muestra diálogo donde aparecen las funciones a escoger en seleccionar imagen
     private void muestraOpcionesImagen() {
         final CharSequence[] option = {getString(R.string.elegirFoto), getString(R.string.elegirGaleria), getString(android.R.string.cancel)};
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -199,6 +206,7 @@ public class EdicionDiaActivity extends AppCompatActivity {
         builder.show();
     }
 
+    //Comprueba si es necesario solicitar permisos de acceso al usuario
     private boolean noNecesarioSolicitarPermisos() {
         //si la versión es inferior a la 6
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
@@ -208,7 +216,7 @@ public class EdicionDiaActivity extends AppCompatActivity {
             return true;
         //indicamos al usuario porqué necesitamos los permisos siempre que no haya indicado que no lo volvamos a hacer
         if ((shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE)) || (shouldShowRequestPermissionRationale(CAMERA))) {
-            Snackbar.make(clPrincipal, "Necesito los permisos para poder elegir una foto", Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, v -> requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS)).show();
+            Snackbar.make(clPrincipal, R.string.solicitarPermisos, Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, v -> requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS)).show();
         } else {//pedimos permisos sin indicar el porqué
             requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
         }
@@ -219,10 +227,11 @@ public class EdicionDiaActivity extends AppCompatActivity {
      * Si se deniegan los permisos mostramos las opciones de la aplicación
      * para que el usuario acepte los permisos
      */
+    //Muestra los mensajes necesarios para la petición de permisos
     private void muestraExplicacionDenegacionPermisos() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Petición de Permisos");
-        builder.setMessage("Necesito los permisos para seleccionar una foto");
+        builder.setTitle(R.string.peticionPermisos);
+        builder.setMessage(R.string.peticionPermisosMensaje);
         builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
             Intent intent = new Intent();
 
@@ -238,12 +247,13 @@ public class EdicionDiaActivity extends AppCompatActivity {
         builder.show();
     }
 
+    //Comprueba los permisos obtenidos por el usuario
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == MY_PERMISSIONS) {
             if (grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Permisos aceptados", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.permisosAceptados), Toast.LENGTH_SHORT).show();
                 muestraOpcionesImagen();
             } else {//si no se aceptan los permisos
                 muestraExplicacionDenegacionPermisos();
@@ -265,6 +275,7 @@ public class EdicionDiaActivity extends AppCompatActivity {
         }
     }
 
+    //Recibe los datos pasados por otra activity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

@@ -47,6 +47,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * Clase encargada de la ejecución principal del programa
+ */
 public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_DIA = "net.iessochoa.tomassolerlinares.practica5.ui.mainactivity.extra_dia";
@@ -127,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
         guardarBusquedaPreferencias();
     }
 
+    //Método que se ejecuta cuando la aplicación vuelve a retomar su funcionamiento
     @Override
     public void onResume() {
         super.onResume();
@@ -139,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
     private void avisarEscribirDiario() {
     }
 
+    //Define el color de fondo en base al sexo elegido
     private void leerEstiloChicoChica() {
         String sexo = preferencias.getString("preference_sexo", "none");
         switch (sexo) {
@@ -153,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //Define el título del programa empleado el nombre que el usuario ha pasado como parámetro
     private void defineTituloApp() {
         int pantalla = (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK);
         if ((pantalla == Configuration.SCREENLAYOUT_SIZE_LARGE) || pantalla == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
@@ -160,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //Guarda las preferencias de búsqueda actuales
     private void guardarBusquedaPreferencias() {
         SharedPreferences prefs = getSharedPreferences(PREFERENCIAS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -286,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
         return builder.create();
     }
 
-    //
+    //Crea un diálogo con una imagen en base a la media de valoración del diario empleando RxJava
     private void onCreateDialogValoracion() {
         diarioViewModel.getValoracionTotal()//obtenemos objeto reactivo de un solo uso 'Single' para que haga la consulta en un hilo
                 .subscribeOn(Schedulers.io())//el observable(la consulta sql) se ejecuta en uno diferente
@@ -297,7 +304,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-//cuando termine  la consulta de la base de datos recibimos el valor
+                    //cuando termine  la consulta de la base de datos recibimos el valor
                     public void onSuccess(@NonNull Integer valoracionMedia) {
                         Toast.makeText(MainActivity.this, "Valoración media: " + valoracionMedia.toString() + "/10", Toast.LENGTH_LONG).show();
 
@@ -329,6 +336,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    //Define el evento Swiper para borrar un día al deslizar un item del RecyclerView
     private void definirEventoSwiper() {
         //Creamos el Evento de Swiper
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new

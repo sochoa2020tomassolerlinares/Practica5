@@ -11,9 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
+/**
+ * Clase abstracta que extiende de RoomDatabase donde se conecta a la base de datos
+ */
 @Database(entities = {DiaDiario.class}, version = 1)
-
 @TypeConverters({TransformaFechaSQLite.class})
 public abstract class DiarioDatabase extends RoomDatabase {
 

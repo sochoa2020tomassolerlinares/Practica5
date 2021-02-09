@@ -5,6 +5,9 @@ import androidx.room.TypeConverter;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Clase encargada de convertir una fecha al formato de nuestro sistema
+ */
 public class TransformaFechaSQLite {
     @TypeConverter
     public static Date fromTimestamp(Long value) {
