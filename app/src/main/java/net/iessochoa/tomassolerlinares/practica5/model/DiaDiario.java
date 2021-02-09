@@ -52,7 +52,7 @@ public class DiaDiario implements Parcelable {
         this.valoracionDia = valoracionDia;
         this.resumen = resumen;
         this.contenido = contenido;
-        this.fotoUri = "";
+        this.fotoUri = "android.resource://net.iessochoa.tomassolerlinares.practica5/drawable/ic_menu_report_image";
     }
 
     public int getId() {

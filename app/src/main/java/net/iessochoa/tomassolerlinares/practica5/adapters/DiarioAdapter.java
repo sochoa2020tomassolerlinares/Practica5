@@ -16,6 +16,10 @@ import net.iessochoa.tomassolerlinares.practica5.model.DiaDiario;
 
 import java.util.List;
 
+/**
+ * Clase encargada de
+ */
+
 public class DiarioAdapter extends RecyclerView.Adapter<DiarioAdapter.DiarioViewHolder> {
     private List<DiaDiario> listaDias;
 

@@ -87,7 +87,7 @@ public class EdicionDiaActivity extends AppCompatActivity {
                 }
             }
             if(editDia.getFotoUri()!=null){
-                uriFoto=Uri.parse(dia.getFotoUri());
+                uriFoto=Uri.parse(editDia.getFotoUri());
                 muestraFoto();
             }
 
@@ -168,9 +168,14 @@ public class EdicionDiaActivity extends AppCompatActivity {
     }
 
     private void muestraFoto() {
-        Glide.with(this)
-                .load(uriFoto) // Uri of the picture
-                .into(ivFoto);//imageView
+        if(uriFoto != null){
+            Glide.with(this)
+                    .load(uriFoto) // Uri of the picture
+                    .into(ivFoto);//imageView
+        }else{
+            Uri uri = Uri.parse("android.resource://net.iessochoa.tomassolerlinares.practica5/drawable/ic_menu_report_image");
+            Glide.with(this).load(uri).into(ivFoto);
+        }
     }
 
     private void muestraOpcionesImagen() {
